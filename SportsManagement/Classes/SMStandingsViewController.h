@@ -10,7 +10,13 @@
 
 
 @interface SMStandingsViewController : UITableViewController {
-
+	
+	NSMutableData *receivedData;
+	NSMutableArray *results;
 }
+
+@property (nonatomic, retain) NSMutableArray *results;
+
+
 
 @end

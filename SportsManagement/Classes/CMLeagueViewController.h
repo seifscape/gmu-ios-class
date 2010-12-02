@@ -10,7 +10,12 @@
 
 
 @interface CMLeagueViewController : UITableViewController {
-
+	NSMutableArray *leagueArray;
+	NSMutableArray *seasonArray;
+	
+	NSMutableData *receivedData;
+	NSMutableArray *results;
 }
 
+@property (nonatomic, retain) NSMutableArray *results;
 @end
