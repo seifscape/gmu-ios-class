@@ -10,8 +10,8 @@
 
 
 @interface SMStandingsViewController : UITableViewController {
-	
 	NSMutableData *receivedData;
+	NSMutableDictionary *receivedDataDictionary;
 	NSMutableArray *results;
 }
 

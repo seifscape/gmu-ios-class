@@ -40,8 +40,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];	
 	
-	CMLeagueViewController *vc = [[CMLeagueViewController alloc] init];
-	[self presentModalViewController:vc animated:YES];
+	CMLeagueViewController *vc = [[CMLeagueViewController alloc] init];	
+	[self.navigationController pushViewController:vc animated:YES];
 	[vc release];
 			
 }
