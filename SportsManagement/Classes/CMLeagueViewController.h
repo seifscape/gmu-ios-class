@@ -7,15 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class MyLeague;
 
 @interface CMLeagueViewController : UITableViewController {
-	NSMutableArray *leagueArray;
-	NSMutableArray *seasonArray;
-	
-	NSMutableData *receivedData;
-	NSMutableArray *results;
-}
 
-@property (nonatomic, retain) NSMutableArray *results;
+	NSMutableData *receivedData;
+	NSArray *results;
+	MyLeague *curLeague;
+
+}
+@property (nonatomic, retain) NSArray *results;
+@property (nonatomic, retain) MyLeague *curLeague;
 @end

@@ -8,11 +8,10 @@
 
 #import "CMLeagueViewController.h"
 #import <YAJLIOS/YAJLIOS.h>
-#import "SMLoginViewController.h"
-
+#import "CMSeasonViewController.h"
 
 @implementation CMLeagueViewController
-@synthesize results;
+@synthesize results, curLeague;
 
 // predefined network alias
 #define NETWORK_ON [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -22,15 +21,15 @@
 #pragma mark Initialization
 
 /*
-- (id)initWithStyle:(UITableViewStyle)style {
-    // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization.
-    }
-    return self;
-}
-*/
+ - (id)initWithStyle:(UITableViewStyle)style {
+ // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
+ self = [super initWithStyle:style];
+ if (self) {
+ // Custom initialization.
+ }
+ return self;
+ }
+ */
 
 
 #pragma mark -
@@ -40,14 +39,23 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	NETWORK_ON
-	NSString *urlStr = [NSString stringWithFormat:@"http://42.0.46.89:3000/leagues.json"]; 
-	NSURL *url = [NSURL URLWithString:urlStr];
+	//NSString *urlStr = [NSString stringWithFormat:@"http://www.djakeed.com/JSON/leagues.json"]; 
+	//NSURL *url = [NSURL URLWithString:urlStr];
 	
-	NSURLRequest *request = [NSURLRequest requestWithURL:url]; 
+	NSURL *urlStr = [NSURL URLWithString:@"http://www.djakeed.com/JSON/leagues.json"];	
+	
+	// URLRequest
+	NSURLRequest *request = [NSURLRequest requestWithURL:urlStr];
 	[NSURLConnection connectionWithRequest:request delegate:self];
 	
-	receivedData = [[NSMutableData data] retain];
+	
+	// Creating MutableData Object 
+	receivedData = [[NSMutableData alloc] init];
+	
+	// Creating a Mutable Array
 	self.results = [NSMutableArray array];
+
+	curLeague = [[MyLeague alloc] init];
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -55,36 +63,36 @@
 
 
 /*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-*/
+ - (void)viewWillAppear:(BOOL)animated {
+ [super viewWillAppear:animated];
+ }
+ */
 /*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
+ - (void)viewDidAppear:(BOOL)animated {
+ [super viewDidAppear:animated];
+ }
+ */
 /*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-*/
+ - (void)viewWillDisappear:(BOOL)animated {
+ [super viewWillDisappear:animated];
+ }
+ */
 /*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
+ - (void)viewDidDisappear:(BOOL)animated {
+ [super viewDidDisappear:animated];
+ }
+ */
 /*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations.
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
+ // Override to allow orientations other than the default portrait orientation.
+ - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+ // Return YES for supported orientations.
+ return (interfaceOrientation == UIInterfaceOrientationPortrait);
+ }
+ */
 
 
 #pragma mark NSURLConnection Delegate
-
+/*
 - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge{
 	NETWORK_ON
 	SMLoginViewController *vc = [[SMLoginViewController alloc] initWithChallenge:challenge];
@@ -92,40 +100,30 @@
 	[vc release];
 	
 }
-
+*/
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data 
 {
-	//NSString* strData = [[[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSASCIIStringEncoding] autorelease];
-	// Output Data into the Console
-	//NSLog(@"Received data: %@", strData ) ;
 	NETWORK_ON;
     [receivedData appendData:data];
-	return ;
+
+	
+	return;
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response{
     NETWORK_ON;
+	
 	[receivedData setLength:0];
+	
+
 }
 
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     NETWORK_OFF;
-	NSLog(@"login succeeded!");
-    
-    self.results = [receivedData yajl_JSON];
-    NSLog(@"%@", self.results);
-	
-    NSDictionary *feed = [receivedData yajl_JSON];
-	
-    //NSString *someString = [feed valueForKey:@"sport"];
-    //NSLog(@"This is the title of a stream: %@", someString);
-    //NSArray  *array = [NSArray arrayWithObject:someString];
-    //self.myArray = array;
-	//NSLog(@"%@", feed);
-    
+	self.results = [receivedData yajl_JSON];
 	[self.tableView reloadData];
     
 }
@@ -157,6 +155,18 @@
 }
 
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	
+	NSString *sectionHeader = nil;
+	
+	if(section == 0) {
+		sectionHeader = @"Leagues";
+	}
+		
+	return sectionHeader;
+}
+
+
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -173,51 +183,52 @@
 	
 	//NSArray *array = [self.myArray objectAtIndex:indexPath.row];
 	//cell.textLabel.text = [array objectAtIndex:indexPath.row];
+	
 	cell.textLabel.text = [feed valueForKey:@"sport"];
 	cell.detailTextLabel.text = [feed valueForKey:@"name"];
-	
+
     return cell;
 }
 
 
 /*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
 
 
 /*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source.
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-    }   
-}
-*/
+ // Override to support editing the table view.
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+ 
+ if (editingStyle == UITableViewCellEditingStyleDelete) {
+ // Delete the row from the data source.
+ [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ }   
+ else if (editingStyle == UITableViewCellEditingStyleInsert) {
+ // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
+ }   
+ }
+ */
 
 
 /*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+ }
+ */
 
 
 /*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
+ // Override to support conditional rearranging of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+ // Return NO if you do not want the item to be re-orderable.
+ return YES;
+ }
+ */
 
 
 #pragma mark -
@@ -225,13 +236,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Navigation logic may go here. Create and push another view controller.
-    /*
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
-    [detailViewController release];
-    */
+    
+	 NSDictionary *feed = [results objectAtIndex:indexPath.row];
+	 CMSeasonViewController *seasonVC = [[CMSeasonViewController alloc] init];
+	 [curLeague setLeagueID:[feed valueForKey:@"id"]]; 
+	 seasonVC.curLeague = self.curLeague;
+	 [self.navigationController pushViewController:seasonVC animated:YES];
+	 [seasonVC release];
+	
 }
 
 
