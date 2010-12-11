@@ -8,10 +8,12 @@
 
 #import "CMSeasonViewController.h"
 #import "CMLeagueViewController.h"
-#import "MyLeague.h"
+#import "CurrentPath.h"
+#import "SMStandingsViewController.h"
+#import "SMLoginViewController.h"
 
 @implementation CMSeasonViewController
-@synthesize results, curLeague;
+@synthesize results, curSelection;
 
 // predefined network alias
 #define NETWORK_ON [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -24,27 +26,30 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-//MyAppDelegate *appDelegate = (MyAppDelegate *)[[UIApplication sharedApplication] delegate];
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	
-	NSURL *urlStr = [NSURL URLWithString:@"http://www.djakeed.com/JSON/seasons.json"];	
 	
+	NSString *urlOne = [NSString stringWithFormat:@"http://nicsports.railsplayground.net/leagues/%@/seasons.json",
+						curSelection.leagueID];
+		
+	NSURL *urlStr = [NSURL URLWithString:urlOne];	
+
 	NSURLRequest *request = [NSURLRequest requestWithURL:urlStr];
 	[NSURLConnection connectionWithRequest:request delegate:self];
 	
 	receivedData = [[NSMutableData alloc] init];
 	
 	self.results = [NSMutableArray array];
-	
+		
 }
 
 
-/*
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+	[self.tableView reloadData];
 }
-*/
+
 /*
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -70,7 +75,7 @@
 
 
 #pragma mark NSURLConnection Delegate
-/*
+
  - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge{
  NETWORK_ON
  SMLoginViewController *vc = [[SMLoginViewController alloc] initWithChallenge:challenge];
@@ -78,7 +83,7 @@
  [vc release];
  
  }
- */
+ 
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data 
 {
@@ -105,11 +110,11 @@
 	self.results = [receivedData yajl_JSON];
     //NSLog(@"%@", self.results);
 	
-	
-    NSDictionary *feed = [receivedData yajl_JSON];
+	/*
 	NSArray *seasonArray = [[NSArray alloc]
 							initWithObjects:[feed valueForKey:@"start_date"], [feed valueForKey:@"end_date"], nil];
 	NSLog(@"Season: %@", seasonArray);
+	 */
 
 	
 	[self.tableView reloadData];
@@ -163,7 +168,7 @@
 	NSDictionary *feed = [results objectAtIndex:indexPath.row];
 
 	
-	if (curLeague.leagueID == [feed valueForKey:@"league_id"]) {
+	if (curSelection.leagueID == [feed valueForKey:@"league_id"]) {
 	
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc]init];
 	[dateFormat setDateFormat:@"yyyy-MM-dd"];
@@ -176,17 +181,6 @@
 	cell.textLabel.text = newString;
 	
 	}
-	//NSArray *array = [self.myArray objectAtIndex:indexPath.row];
-	//cell.textLabel.text = [array objectAtIndex:indexPath.row];
-	
-	
-	//NSString *startDateString = ];
-	//NSString *endtDateString = [dateFormatter stringFromDate:[feed valueForKey:@"end_date"]];
-
-								 
-	
-	//cell.detailTextLabel.text = endtDateString;
-    
     return cell;
 }
 
@@ -235,6 +229,17 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	NSDictionary *feed = [results objectAtIndex:indexPath.row];
+	[curSelection setSeasonID:[feed valueForKey:@"league_id"]];
+	NSLog(@"Season League ID value :%@", [curSelection seasonID]);
+	[self.navigationController popToRootViewControllerAnimated:YES];
+	
+
+	
+	//[self.navigationController popViewControllerAnimated:self animated:YES];
+	
+	
     // Navigation logic may go here. Create and push another view controller.
 	/*
 	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];

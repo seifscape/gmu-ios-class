@@ -9,9 +9,10 @@
 #import "CMLeagueViewController.h"
 #import <YAJLIOS/YAJLIOS.h>
 #import "CMSeasonViewController.h"
+#import "SMLoginViewController.h"
 
 @implementation CMLeagueViewController
-@synthesize results, curLeague;
+@synthesize results, curSelection;
 
 // predefined network alias
 #define NETWORK_ON [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -42,7 +43,7 @@
 	//NSString *urlStr = [NSString stringWithFormat:@"http://www.djakeed.com/JSON/leagues.json"]; 
 	//NSURL *url = [NSURL URLWithString:urlStr];
 	
-	NSURL *urlStr = [NSURL URLWithString:@"http://www.djakeed.com/JSON/leagues.json"];	
+	NSURL *urlStr = [NSURL URLWithString:@"http://nicsports.railsplayground.net/leagues.json"];	
 	
 	// URLRequest
 	NSURLRequest *request = [NSURLRequest requestWithURL:urlStr];
@@ -54,8 +55,6 @@
 	
 	// Creating a Mutable Array
 	self.results = [NSMutableArray array];
-
-	curLeague = [[MyLeague alloc] init];
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -92,7 +91,7 @@
 
 
 #pragma mark NSURLConnection Delegate
-/*
+
 - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge{
 	NETWORK_ON
 	SMLoginViewController *vc = [[SMLoginViewController alloc] initWithChallenge:challenge];
@@ -100,7 +99,7 @@
 	[vc release];
 	
 }
-*/
+
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data 
 {
@@ -239,8 +238,9 @@
     
 	 NSDictionary *feed = [results objectAtIndex:indexPath.row];
 	 CMSeasonViewController *seasonVC = [[CMSeasonViewController alloc] init];
-	 [curLeague setLeagueID:[feed valueForKey:@"id"]]; 
-	 seasonVC.curLeague = self.curLeague;
+     [curSelection setLeagueID:[feed valueForKey:@"id"]];
+	  NSLog(@"League ID value :%@", [curSelection leagueID]);
+	 seasonVC.curSelection = self.curSelection;
 	 [self.navigationController pushViewController:seasonVC animated:YES];
 	 [seasonVC release];
 	

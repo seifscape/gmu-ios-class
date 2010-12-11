@@ -7,16 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class CurrentPath;
 
 @interface SMStandingsViewController : UITableViewController {
 	NSMutableData *receivedData;
 	NSMutableDictionary *receivedDataDictionary;
 	NSMutableArray *results;
+	IBOutlet UIBarButtonItem *leagueButton;
+	CurrentPath *curSelection;
 }
 
 @property (nonatomic, retain) NSMutableArray *results;
+@property (nonatomic, retain) CurrentPath *curSelection;
 
+-(IBAction)leagueButton;
 
 
 @end

@@ -14,7 +14,7 @@
 		281EE73F12A30EF500D07884 /* League.xib in Resources */ = {isa = PBXBuildFile; fileRef = 281EE73E12A30EF500D07884 /* League.xib */; };
 		282CCBFE0DB6C98000C4EA27 /* Schedule.xib in Resources */ = {isa = PBXBuildFile; fileRef = 282CCBFD0DB6C98000C4EA27 /* Schedule.xib */; };
 		2840D7CE1179279E00D7F93C /* Profile.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2840D7CD1179279E00D7F93C /* Profile.xib */; };
-		284B14B412B0822600F002BE /* MyLeague.m in Sources */ = {isa = PBXBuildFile; fileRef = 284B14B312B0822600F002BE /* MyLeague.m */; };
+		284B14B412B0822600F002BE /* CurrentPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 284B14B312B0822600F002BE /* CurrentPath.m */; };
 		28527FB012ADD097007BEB1B /* CMSeasonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28527FAE12ADD097007BEB1B /* CMSeasonViewController.m */; };
 		28527FB812ADDD1E007BEB1B /* Season.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28527FB712ADDD1E007BEB1B /* Season.xib */; };
 		288765080DF74369002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765070DF74369002DB57D /* CoreGraphics.framework */; };
@@ -41,8 +41,8 @@
 		281EE73E12A30EF500D07884 /* League.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = League.xib; sourceTree = "<group>"; };
 		282CCBFD0DB6C98000C4EA27 /* Schedule.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Schedule.xib; sourceTree = "<group>"; };
 		2840D7CD1179279E00D7F93C /* Profile.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Profile.xib; sourceTree = "<group>"; };
-		284B14B212B0822600F002BE /* MyLeague.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLeague.h; sourceTree = "<group>"; };
-		284B14B312B0822600F002BE /* MyLeague.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLeague.m; sourceTree = "<group>"; };
+		284B14B212B0822600F002BE /* CurrentPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentPath.h; sourceTree = "<group>"; };
+		284B14B312B0822600F002BE /* CurrentPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentPath.m; sourceTree = "<group>"; };
 		28527FAD12ADD097007BEB1B /* CMSeasonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMSeasonViewController.h; sourceTree = "<group>"; };
 		28527FAE12ADD097007BEB1B /* CMSeasonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMSeasonViewController.m; sourceTree = "<group>"; };
 		28527FB712ADDD1E007BEB1B /* Season.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Season.xib; sourceTree = "<group>"; };
@@ -198,8 +198,8 @@
 				9193B16A1280DE6700C1F08D /* SMStandingsViewController.m */,
 				28527FAD12ADD097007BEB1B /* CMSeasonViewController.h */,
 				28527FAE12ADD097007BEB1B /* CMSeasonViewController.m */,
-				284B14B212B0822600F002BE /* MyLeague.h */,
-				284B14B312B0822600F002BE /* MyLeague.m */,
+				284B14B212B0822600F002BE /* CurrentPath.h */,
+				284B14B312B0822600F002BE /* CurrentPath.m */,
 			);
 			name = Standings;
 			sourceTree = "<group>";
@@ -309,7 +309,7 @@
 				9193B19B1280E42A00C1F08D /* CMTeamViewController.m in Sources */,
 				91CBD0831295BFCE00FAC9DC /* SMLoginViewController.m in Sources */,
 				28527FB012ADD097007BEB1B /* CMSeasonViewController.m in Sources */,
-				284B14B412B0822600F002BE /* MyLeague.m in Sources */,
+				284B14B412B0822600F002BE /* CurrentPath.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

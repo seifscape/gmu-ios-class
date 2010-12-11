@@ -8,10 +8,11 @@
 
 #import "SMStandingsViewController.h"
 #import "CMLeagueViewController.h"
+#import "SMLoginViewController.h"
 #import <YAJLIOS/YAJLIOS.h>
-
+#import "CurrentPath.h"
 @implementation SMStandingsViewController
-@synthesize results;
+@synthesize results, curSelection;
 
 // predefined network alias
 #define NETWORK_ON [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -39,11 +40,34 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];	
+
+	curSelection = [[CurrentPath alloc] init];
 	
-	CMLeagueViewController *vc = [[CMLeagueViewController alloc] init];	
+	if (curSelection.leagueID == nil || curSelection.seasonID == nil){
+		
+		CMLeagueViewController *vc = [[CMLeagueViewController alloc] init];	
+		vc.curSelection = self.curSelection;
+		[self.navigationController pushViewController:vc animated:NO];
+		[vc release];	
+	}
+	
+	// Creating MutableData Object 
+	receivedData = [[NSMutableData alloc] init];
+	
+	// Creating a Mutable Array
+	self.results = [NSMutableArray array];
+	
+}
+
+-(IBAction)leagueButton {	
+	CMLeagueViewController *vc = [[CMLeagueViewController alloc] init];
 	[self.navigationController pushViewController:vc animated:YES];
-	[vc release];
-			
+	[vc release];	
+	
+}
+
+-(void)popNavControllerToSelf{
+	[self.navigationController popToViewController:self animated:YES];
 }
 
 /*
@@ -52,11 +76,22 @@
  }
  */
 
-/*
+
  - (void)viewDidAppear:(BOOL)animated {
  [super viewDidAppear:animated];
+ 
+	 NSString *urlOne = [NSString stringWithFormat:@"http://nicsports.railsplayground.net/leagues/%@/seasons/%@.json",
+						 curSelection.leagueID, curSelection.seasonID];
+	 
+	 NSURL *urlStr = [NSURL URLWithString:urlOne];	
+	 
+	 // URLRequest
+	 NSURLRequest *request = [NSURLRequest requestWithURL:urlStr];
+	 [NSURLConnection connectionWithRequest:request delegate:self];
+ 
+	 
  }
- */
+ 
 /*
  - (void)viewWillDisappear:(BOOL)animated {
  [super viewWillDisappear:animated];
@@ -74,6 +109,65 @@
  return (interfaceOrientation == UIInterfaceOrientationPortrait);
  }
  */
+
+#pragma mark NSURLConnection Delegate
+
+ - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge{
+ NETWORK_ON
+ SMLoginViewController *vc = [[SMLoginViewController alloc] initWithChallenge:challenge];
+ [self presentModalViewController:vc animated:YES];
+ [vc release];
+ 
+ }
+ 
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data 
+{
+	NETWORK_ON;
+    [receivedData appendData:data];
+	
+	
+	return ;
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response{
+    NETWORK_ON;
+	
+	[receivedData setLength:0];
+	
+	
+}
+
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    NETWORK_OFF;
+	
+	self.results = [receivedData yajl_JSON];
+    //NSLog(@"%@", self.results);
+	
+
+	
+	//NSLog([teamArray description]);
+	
+	
+	//NSLog(@"seasonTeams: %@", seasonTeams);
+	//NSLog(@"teamStanding: %@", teamStandings);
+	
+	
+	[self.tableView reloadData];
+    
+}
+
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    NETWORK_ON
+    NSLog(@"Response failed. Reason: %@", error);
+	NETWORK_OFF
+}
+
+
 
 
 #pragma mark -
@@ -103,7 +197,30 @@
 	}
     
     // Configure the cell...
-
+	NSDictionary *feed = [receivedData yajl_JSON];
+	
+	//NSLog(@"Count of Array: %d\n%@", [results count], results);	
+	
+	NSDictionary *seasonTeams = [[NSDictionary alloc] init];
+	seasonTeams = [feed valueForKey:@"seasons_teams"];
+	
+	NSDictionary *teamStandings = [[NSDictionary alloc] init];
+	teamStandings = [feed valueForKey:@"standings"];
+		
+	
+	NSArray *IDs = [teamStandings valueForKey: @"id"];
+	for (NSNumber *teamID in seasonTeams){
+		// seasonTeams prints multiple and teamID only once
+		teamID =  [[teamID valueForKey:@"team_id"] retain];
+				
+		NSDictionary *thisTeam = [teamStandings objectAtIndex:indexPath.row];
+		NSLog(@"Team Name: %@", [thisTeam valueForKey:@"name"]);
+		
+		cell.textLabel.text = [thisTeam valueForKey:@"name"];
+		
+		//cell.detailTextLabel.text = [seasonTeams valueForKey:@"win"]; 
+	}
+	
 	
     return cell;
 }
@@ -153,6 +270,8 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	
     // Navigation logic may go here. Create and push another view controller.
     /*
 	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
