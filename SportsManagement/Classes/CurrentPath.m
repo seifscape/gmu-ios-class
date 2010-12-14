@@ -10,6 +10,6 @@
 
 
 @implementation CurrentPath
-@synthesize leagueID,seasonID,teamID;
+@synthesize leagueID,seasonID;
 
 @end

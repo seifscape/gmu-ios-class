@@ -108,6 +108,8 @@
     NETWORK_OFF;
 	
 	self.results = [receivedData yajl_JSON];
+	
+	//NSLog(@"%@", results);
     //NSLog(@"%@", self.results);
 	
 	/*
@@ -231,9 +233,18 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	
 	NSDictionary *feed = [results objectAtIndex:indexPath.row];
-	[curSelection setSeasonID:[feed valueForKey:@"league_id"]];
+	[curSelection setSeasonID:[feed valueForKey:@"id"]];
 	NSLog(@"Season League ID value :%@", [curSelection seasonID]);
-	[self.navigationController popToRootViewControllerAnimated:YES];
+
+	
+	NSInteger currentIndex = [self.navigationController.viewControllers indexOfObject:self];
+	if( currentIndex-2 >= 0 ) {
+		[self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:currentIndex-2] animated:YES];
+	}
+	
+	
+	//[self.navigationController popToRootViewControllerAnimated:YES];
+	
 	
 
 	

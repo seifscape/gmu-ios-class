@@ -12,12 +12,15 @@
 @interface SMStandingsViewController : UITableViewController {
 	NSMutableData *receivedData;
 	NSMutableDictionary *receivedDataDictionary;
-	NSMutableArray *results;
+	NSArray *results;
 	IBOutlet UIBarButtonItem *leagueButton;
 	CurrentPath *curSelection;
+	NSMutableArray *standingsArray;
+	
 }
 
-@property (nonatomic, retain) NSMutableArray *results;
+@property (nonatomic, retain) NSMutableArray *standingsArray;
+@property (nonatomic, retain) NSArray *results;
 @property (nonatomic, retain) CurrentPath *curSelection;
 
 -(IBAction)leagueButton;

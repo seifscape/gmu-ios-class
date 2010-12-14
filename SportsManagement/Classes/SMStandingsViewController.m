@@ -12,7 +12,7 @@
 #import <YAJLIOS/YAJLIOS.h>
 #import "CurrentPath.h"
 @implementation SMStandingsViewController
-@synthesize results, curSelection;
+@synthesize results, curSelection, standingsArray;
 
 // predefined network alias
 #define NETWORK_ON [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -45,23 +45,27 @@
 	
 	if (curSelection.leagueID == nil || curSelection.seasonID == nil){
 		
-		CMLeagueViewController *vc = [[CMLeagueViewController alloc] init];	
-		vc.curSelection = self.curSelection;
-		[self.navigationController pushViewController:vc animated:NO];
-		[vc release];	
+		CMLeagueViewController *vc = [[CMLeagueViewController alloc] init];
+		vc.curSelection= self.curSelection;
+		[[self navigationController] pushViewController:vc animated:YES];
+		
+		
+		
 	}
 	
 	// Creating MutableData Object 
 	receivedData = [[NSMutableData alloc] init];
 	
 	// Creating a Mutable Array
-	self.results = [NSMutableArray array];
+	self.results = [NSArray array];
+	self.standingsArray = [NSMutableArray array];
 	
 }
 
 -(IBAction)leagueButton {	
 	CMLeagueViewController *vc = [[CMLeagueViewController alloc] init];
 	[self.navigationController pushViewController:vc animated:YES];
+	vc.curSelection = self.curSelection;
 	[vc release];	
 	
 }
@@ -70,11 +74,20 @@
 	[self.navigationController popToViewController:self animated:YES];
 }
 
-/*
+
  - (void)viewWillAppear:(BOOL)animated {
  [super viewWillAppear:animated];    
+	 if (curSelection.leagueID == nil || curSelection.seasonID == nil){
+		 NSLog(@"Current Path is NULL");
+	 }
+	 else {
+		 NSLog(@"League ID:%@ Season ID:%@", curSelection.leagueID, curSelection.seasonID);
+	 }
+
+ 
+ 
  }
- */
+ 
 
 
  - (void)viewDidAppear:(BOOL)animated {
@@ -146,13 +159,37 @@
 	self.results = [receivedData yajl_JSON];
     //NSLog(@"%@", self.results);
 	
+	NSDictionary *feed = [receivedData yajl_JSON];
 
+	NSDictionary *seasonTeams = [[NSDictionary alloc] init];
+	seasonTeams = [feed valueForKey:@"seasons_teams"];
 	
-	//NSLog([teamArray description]);
+	NSDictionary *teamStandings = [[NSDictionary alloc] init];
+	teamStandings = [feed valueForKey:@"standings"];
 	
+	// Create an Array of objects with the key value of "id"
+	NSArray *IDs = [teamStandings valueForKey: @"id"];
+	
+	
+	for (NSNumber *teamID in seasonTeams){
+		teamID =  [[teamID valueForKey:@"team_id"] retain];
+		NSUInteger index = [IDs indexOfObject:teamID];
+		//NSLog(@"%@", teamID);
+		NSDictionary *thisTeam = [teamStandings objectAtIndex:index];
+		//NSLog(@"Team Name: %@", [thisTeam valueForKey:@"name"]);
+		[standingsArray addObject:[thisTeam valueForKey:@"name"]];
+	
+	}
+	
+	NSLog(@"Count of managedObjectContext: %d\n%@", [self.standingsArray count], self.standingsArray);
+	NSLog(@"Count of managedObjectContext: %d\n%@", [self.results count], self.results);
+
+	NSLog([standingsArray description]);
+
 	
 	//NSLog(@"seasonTeams: %@", seasonTeams);
 	//NSLog(@"teamStanding: %@", teamStandings);
+	
 	
 	
 	[self.tableView reloadData];
@@ -175,14 +212,13 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return [results count];
+    return 1;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
-	
-    return [results count];
+    // Return the number of rows in the section.	
+    return [standingsArray count];
 }
 
 
@@ -197,31 +233,7 @@
 	}
     
     // Configure the cell...
-	NSDictionary *feed = [receivedData yajl_JSON];
-	
-	//NSLog(@"Count of Array: %d\n%@", [results count], results);	
-	
-	NSDictionary *seasonTeams = [[NSDictionary alloc] init];
-	seasonTeams = [feed valueForKey:@"seasons_teams"];
-	
-	NSDictionary *teamStandings = [[NSDictionary alloc] init];
-	teamStandings = [feed valueForKey:@"standings"];
-		
-	
-	NSArray *IDs = [teamStandings valueForKey: @"id"];
-	for (NSNumber *teamID in seasonTeams){
-		// seasonTeams prints multiple and teamID only once
-		teamID =  [[teamID valueForKey:@"team_id"] retain];
-				
-		NSDictionary *thisTeam = [teamStandings objectAtIndex:indexPath.row];
-		NSLog(@"Team Name: %@", [thisTeam valueForKey:@"name"]);
-		
-		cell.textLabel.text = [thisTeam valueForKey:@"name"];
-		
-		//cell.detailTextLabel.text = [seasonTeams valueForKey:@"win"]; 
-	}
-	
-	
+	cell.textLabel.text = [standingsArray objectAtIndex:indexPath.row];
     return cell;
 }
 

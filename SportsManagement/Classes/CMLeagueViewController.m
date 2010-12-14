@@ -10,6 +10,7 @@
 #import <YAJLIOS/YAJLIOS.h>
 #import "CMSeasonViewController.h"
 #import "SMLoginViewController.h"
+#import "CurrentPath.h"
 
 @implementation CMLeagueViewController
 @synthesize results, curSelection;
@@ -238,7 +239,8 @@
     
 	 NSDictionary *feed = [results objectAtIndex:indexPath.row];
 	 CMSeasonViewController *seasonVC = [[CMSeasonViewController alloc] init];
-     [curSelection setLeagueID:[feed valueForKey:@"id"]];
+	
+	[curSelection setLeagueID:[feed valueForKey:@"id"]];
 	  NSLog(@"League ID value :%@", [curSelection leagueID]);
 	 seasonVC.curSelection = self.curSelection;
 	 [self.navigationController pushViewController:seasonVC animated:YES];

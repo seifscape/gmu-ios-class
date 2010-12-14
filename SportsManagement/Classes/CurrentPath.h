@@ -13,13 +13,11 @@
 
 	NSNumber *leagueID;
 	NSNumber *seasonID;
-	NSNumber *teamID;
 	
 }
 
 @property (nonatomic, retain) NSNumber *leagueID;
 @property (nonatomic, retain) NSNumber *seasonID;
-@property (nonatomic, retain) NSNumber *teamID;
 
 
 @end
