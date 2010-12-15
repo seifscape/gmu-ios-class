@@ -167,24 +167,41 @@
 	NSDictionary *teamStandings = [[NSDictionary alloc] init];
 	teamStandings = [feed valueForKey:@"standings"];
 	
+	//NSDictionary *teamDictinary = [[NSDictionary alloc] initWithObjectsAndKeys:@"value1", @"key1", @"value2", @"key2", nil];
+	//[teamDictinary setValue:standingsArray forKey:@"key1"];
+
+	
 	// Create an Array of objects with the key value of "id"
 	NSArray *IDs = [teamStandings valueForKey: @"id"];
-	
 	
 	for (NSNumber *teamID in seasonTeams){
 		teamID =  [[teamID valueForKey:@"team_id"] retain];
 		NSUInteger index = [IDs indexOfObject:teamID];
 		//NSLog(@"%@", teamID);
 		NSDictionary *thisTeam = [teamStandings objectAtIndex:index];
-		//NSLog(@"Team Name: %@", [thisTeam valueForKey:@"name"]);
-		[standingsArray addObject:[thisTeam valueForKey:@"name"]];
+		//[standingsArray addObject:[thisTeam valueForKey:@"name"]];
+		
+		
+		//NSLog([thisTeam valueForKey:@"name"]);
 	
 	}
 	
-	NSLog(@"Count of managedObjectContext: %d\n%@", [self.standingsArray count], self.standingsArray);
-	NSLog(@"Count of managedObjectContext: %d\n%@", [self.results count], self.results);
+	for(NSString *teamName in teamStandings){
+		teamName = [[teamName valueForKey:@"name"]retain];
+		[standingsArray addObject:teamName];
+		NSLog(@"Name %s", teamName);
+	}
+	
+	
+		//NSLog([NSString stringWithFormat:@"s=%@", s]);
 
-	NSLog([standingsArray description]);
+	
+	
+	//NSLog(@"Count of managedObjectContext: %d\n%@", [seasonTeams count], seasonTeams);
+	//NSLog(@"Count of managedObjectContext: %d\n%@", [teamStandings count], teamStandings);
+	//NSLog(@"Count of managedObjectContext: %d\n%@", [self.results count], self.results);
+
+	//NSLog([standingsArray description]);
 
 	
 	//NSLog(@"seasonTeams: %@", seasonTeams);
@@ -195,6 +212,7 @@
 	[self.tableView reloadData];
     
 }
+
 
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
@@ -233,7 +251,11 @@
 	}
     
     // Configure the cell...
-	cell.textLabel.text = [standingsArray objectAtIndex:indexPath.row];
+	
+	
+	NSMutableArray* reversed = [[standingsArray reverseObjectEnumerator] allObjects];
+	
+	cell.textLabel.text = [reversed objectAtIndex:indexPath.row];
     return cell;
 }
 
