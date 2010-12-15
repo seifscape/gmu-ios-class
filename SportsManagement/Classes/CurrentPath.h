@@ -6,8 +6,9 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+// A class that tracks current path to JSON server
 
+#import <Foundation/Foundation.h>
 
 @interface CurrentPath : NSObject {
 

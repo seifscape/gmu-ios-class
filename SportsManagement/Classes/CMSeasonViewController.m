@@ -236,7 +236,6 @@
 	[curSelection setSeasonID:[feed valueForKey:@"id"]];
 	NSLog(@"Season League ID value :%@", [curSelection seasonID]);
 
-	
 	NSInteger currentIndex = [self.navigationController.viewControllers indexOfObject:self];
 	if( currentIndex-2 >= 0 ) {
 		[self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:currentIndex-2] animated:YES];

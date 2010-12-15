@@ -102,6 +102,9 @@
 	 NSURLRequest *request = [NSURLRequest requestWithURL:urlStr];
 	 [NSURLConnection connectionWithRequest:request delegate:self];
  
+	 if (standingsArray != nil){
+		 [standingsArray removeAllObjects];
+	 }
 	 
  }
  
