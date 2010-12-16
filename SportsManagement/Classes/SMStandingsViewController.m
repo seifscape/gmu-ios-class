@@ -127,7 +127,7 @@
 	teamStandings = [feed valueForKey:@"standings"];
 	
 	
-	// Create an Array of objects with the key value of "id"
+	// Create an Array of objects with the key value of "team_id"
 	NSArray *IDs = [seasonTeams valueForKey: @"team_id"];
 	
 	for (NSNumber *teamID in teamStandings){
