@@ -115,7 +115,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
 	
-    return 1;
+    return [results count];
 }
 
 
@@ -172,7 +172,6 @@
 	 CMSeasonViewController *seasonVC = [[CMSeasonViewController alloc] init];
 	
 	[curSelection setLeagueID:[feed valueForKey:@"id"]];
-	  NSLog(@"League ID value :%@", [curSelection leagueID]);
 	 seasonVC.curSelection = self.curSelection;
 	 [self.navigationController pushViewController:seasonVC animated:YES];
 	 [seasonVC release];
