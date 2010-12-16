@@ -50,30 +50,6 @@
 	[self.tableView reloadData];
 }
 
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
-
 #pragma mark NSURLConnection Delegate
 
  - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge{
@@ -109,15 +85,6 @@
 	
 	self.results = [receivedData yajl_JSON];
 	
-	//NSLog(@"%@", results);
-    //NSLog(@"%@", self.results);
-	
-	/*
-	NSArray *seasonArray = [[NSArray alloc]
-							initWithObjects:[feed valueForKey:@"start_date"], [feed valueForKey:@"end_date"], nil];
-	NSLog(@"Season: %@", seasonArray);
-	 */
-
 	
 	[self.tableView reloadData];
     
@@ -171,60 +138,36 @@
 
 	
 	if (curSelection.leagueID == [feed valueForKey:@"league_id"]) {
+	// Start Date
+	NSDateFormatter *startDateFormat = [[NSDateFormatter alloc]init];
+	[startDateFormat setDateFormat:@"yyyy-MM-dd"];
+	NSDate *dateStart = [startDateFormat dateFromString:[feed valueForKey:@"start_date"]];
 	
-	NSDateFormatter *dateFormat = [[NSDateFormatter alloc]init];
-	[dateFormat setDateFormat:@"yyyy-MM-dd"];
-	NSDate *date = [dateFormat dateFromString:[feed valueForKey:@"start_date"]];
+	NSDateFormatter *newStartDate = [[NSDateFormatter alloc]init];
+	[newStartDate setDateFormat:@"MMMM YYYY"];
+	NSString *startDateString = [newStartDate stringFromDate:dateStart];
 	
-	NSDateFormatter *newDate = [[NSDateFormatter alloc]init];
-	[newDate setDateFormat:@"MMMM-YYYY"];
-	NSString *newString = [newDate stringFromDate:date];
+		
+	// End Year
+	NSDateFormatter *endDateFormat = [[NSDateFormatter alloc]init];
+	[endDateFormat setDateFormat:@"yyyy-MM-dd"];
+	NSDate *dateEnd = [endDateFormat dateFromString:[feed valueForKey:@"end_date"]];
 	
-	cell.textLabel.text = newString;
+	NSDateFormatter *newEndDate = [[NSDateFormatter alloc]init];
+	[newEndDate setDateFormat:@"MMMM YYYY"];
+	NSString *endDateString = [newEndDate stringFromDate:dateEnd];	
+		
+	
+	NSString *urlOne = [NSString stringWithFormat:@"%@ - %@",
+						startDateString, endDateString];	
+		
+	cell.textLabel.text = urlOne;
 	
 	}
     return cell;
 }
 
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 
 #pragma mark -
@@ -236,13 +179,14 @@
 	[curSelection setSeasonID:[feed valueForKey:@"id"]];
 	NSLog(@"Season League ID value :%@", [curSelection seasonID]);
 
+	/*
 	NSInteger currentIndex = [self.navigationController.viewControllers indexOfObject:self];
 	if( currentIndex-2 >= 0 ) {
 		[self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:currentIndex-2] animated:YES];
 	}
+	*/
 	
-	
-	//[self.navigationController popToRootViewControllerAnimated:YES];
+	[self.navigationController popToRootViewControllerAnimated:YES];
 	
 	
 

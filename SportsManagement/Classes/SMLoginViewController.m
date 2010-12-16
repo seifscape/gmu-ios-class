@@ -40,7 +40,7 @@
     
     NSURLCredential *credential = [NSURLCredential credentialWithUser:u
                                                              password:p
-                                                          persistence:NSURLCredentialPersistencePermanent];    
+                                                          persistence:NSURLCredentialPersistenceForSession];    
     [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
     [self.parentViewController dismissModalViewControllerAnimated:YES];
 }

@@ -20,21 +20,6 @@
 #define NETWORK_OFF [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 #pragma mark -
-#pragma mark Initialization
-
-/*
- - (id)initWithStyle:(UITableViewStyle)style {
- // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
- self = [super initWithStyle:style];
- if (self) {
- // Custom initialization.
- }
- return self;
- }
- */
-
-
-#pragma mark -
 #pragma mark View lifecycle
 
 
@@ -61,34 +46,10 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-
-/*
- - (void)viewWillAppear:(BOOL)animated {
- [super viewWillAppear:animated];
- }
- */
-/*
- - (void)viewDidAppear:(BOOL)animated {
- [super viewDidAppear:animated];
- }
- */
-/*
- - (void)viewWillDisappear:(BOOL)animated {
- [super viewWillDisappear:animated];
- }
- */
-/*
- - (void)viewDidDisappear:(BOOL)animated {
- [super viewDidDisappear:animated];
- }
- */
-/*
- // Override to allow orientations other than the default portrait orientation.
- - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
- // Return YES for supported orientations.
- return (interfaceOrientation == UIInterfaceOrientationPortrait);
- }
- */
+-(void)setImageView:(UIImage *)newImageView{
+	[imageView release];
+	imageView = [newImageView retain];
+}
 
 
 #pragma mark NSURLConnection Delegate
@@ -105,9 +66,7 @@
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data 
 {
 	NETWORK_ON;
-    [receivedData appendData:data];
-
-	
+    [receivedData appendData:data];	
 	return;
 }
 
@@ -122,9 +81,21 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    NETWORK_OFF;
+	
 	self.results = [receivedData yajl_JSON];
-	[self.tableView reloadData];
+	
+    NETWORK_OFF;
+	// display the error using an alertview.
+    if (self.results == nil || [self.results isKindOfClass:[NSDictionary class]]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[(NSDictionary *)self.results objectForKey:@"error"] delegate:self
+                                              cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        [alert show];
+        [alert release];
+        return;
+	}
+	
+    [self.tableView reloadData];
+
     
 }
 
@@ -181,54 +152,14 @@
 	NSDictionary *feed = [results objectAtIndex:indexPath.row];
 	
 	
-	//NSArray *array = [self.myArray objectAtIndex:indexPath.row];
-	//cell.textLabel.text = [array objectAtIndex:indexPath.row];
+	[self setImageView:[UIImage imageNamed:@"basketball.png"]];
 	
+	cell.imageView.image = imageView;
 	cell.textLabel.text = [feed valueForKey:@"sport"];
 	cell.detailTextLabel.text = [feed valueForKey:@"name"];
 
     return cell;
 }
-
-
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
-
-
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
- 
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source.
- [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
- }   
- else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
- }   
- }
- */
-
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
- }
- */
-
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
 
 
 #pragma mark -
@@ -267,6 +198,8 @@
 
 - (void)dealloc {
     [super dealloc];
+	[imageView release];
+
 }
 
 

@@ -13,6 +13,8 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		281EE73F12A30EF500D07884 /* League.xib in Resources */ = {isa = PBXBuildFile; fileRef = 281EE73E12A30EF500D07884 /* League.xib */; };
 		282CCBFE0DB6C98000C4EA27 /* Schedule.xib in Resources */ = {isa = PBXBuildFile; fileRef = 282CCBFD0DB6C98000C4EA27 /* Schedule.xib */; };
+		283C9D7612BA765900065757 /* league.png in Resources */ = {isa = PBXBuildFile; fileRef = 283C9D7512BA765900065757 /* league.png */; };
+		283C9D8F12BA785F00065757 /* basketball.png in Resources */ = {isa = PBXBuildFile; fileRef = 283C9D8E12BA785F00065757 /* basketball.png */; };
 		2840D7CE1179279E00D7F93C /* Profile.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2840D7CD1179279E00D7F93C /* Profile.xib */; };
 		284B14B412B0822600F002BE /* CurrentPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 284B14B312B0822600F002BE /* CurrentPath.m */; };
 		28527FB012ADD097007BEB1B /* CMSeasonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28527FAE12ADD097007BEB1B /* CMSeasonViewController.m */; };
@@ -40,6 +42,8 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		281EE73E12A30EF500D07884 /* League.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = League.xib; sourceTree = "<group>"; };
 		282CCBFD0DB6C98000C4EA27 /* Schedule.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Schedule.xib; sourceTree = "<group>"; };
+		283C9D7512BA765900065757 /* league.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = league.png; sourceTree = "<group>"; };
+		283C9D8E12BA785F00065757 /* basketball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = basketball.png; sourceTree = "<group>"; };
 		2840D7CD1179279E00D7F93C /* Profile.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Profile.xib; sourceTree = "<group>"; };
 		284B14B212B0822600F002BE /* CurrentPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentPath.h; sourceTree = "<group>"; };
 		284B14B312B0822600F002BE /* CurrentPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentPath.m; sourceTree = "<group>"; };
@@ -194,6 +198,8 @@
 		9193B15C1280CC0200C1F08D /* Standings */ = {
 			isa = PBXGroup;
 			children = (
+				283C9D8E12BA785F00065757 /* basketball.png */,
+				283C9D7512BA765900065757 /* league.png */,
 				9193B1691280DE6700C1F08D /* SMStandingsViewController.h */,
 				9193B16A1280DE6700C1F08D /* SMStandingsViewController.m */,
 				28527FAD12ADD097007BEB1B /* CMSeasonViewController.h */,
@@ -289,6 +295,8 @@
 				91CBD0841295BFCE00FAC9DC /* Login.xib in Resources */,
 				281EE73F12A30EF500D07884 /* League.xib in Resources */,
 				28527FB812ADDD1E007BEB1B /* Season.xib in Resources */,
+				283C9D7612BA765900065757 /* league.png in Resources */,
+				283C9D8F12BA785F00065757 /* basketball.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

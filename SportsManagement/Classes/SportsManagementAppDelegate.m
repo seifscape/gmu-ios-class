@@ -7,12 +7,13 @@
 //
 
 #import "SportsManagementAppDelegate.h"
-
+#import "SMStandingsViewController.h"
+#import "CurrentPath.h"
 
 @implementation SportsManagementAppDelegate
 
 @synthesize window;
-@synthesize tabBarController;
+@synthesize tabBarController, curSelection;
 
 
 #pragma mark -
@@ -20,12 +21,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     
+	
     // Add the tab bar controller's view to the window and display.
     [self.window addSubview:tabBarController.view];
     [self.window makeKeyAndVisible];
 
     return YES;
 }
+
 
 - (void)dealloc {
     [tabBarController release];

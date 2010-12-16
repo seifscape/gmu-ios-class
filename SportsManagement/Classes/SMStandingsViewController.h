@@ -16,9 +16,11 @@
 	IBOutlet UIBarButtonItem *leagueButton;
 	CurrentPath *curSelection;
 	NSMutableArray *standingsArray;
+	NSMutableArray *standingsDetailArray;
 	
 }
 
+@property (nonatomic, retain) NSMutableArray *standingsDetailArray;
 @property (nonatomic, retain) NSMutableArray *standingsArray;
 @property (nonatomic, retain) NSArray *results;
 @property (nonatomic, retain) CurrentPath *curSelection;

@@ -14,8 +14,11 @@
 	NSMutableData *receivedData;
 	NSArray *results;
 	CurrentPath *curSelection;
+	UIImage  *imageView;
 
 }
 @property (nonatomic, retain) NSArray *results;
 @property (nonatomic, retain) CurrentPath *curSelection;
+@property(nonatomic, retain) UIImage *imageView;
+
 @end
